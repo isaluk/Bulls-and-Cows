@@ -1,0 +1,26 @@
+{
+  "name": "bulls-and-cows",
+  "version": "1.0.0",
+  "description": "Bulls and Cows game in functional TypeScript",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "start": "serve public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isaluk/Bulls-and-Cows.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/isaluk/Bulls-and-Cows/issues"
+  },
+  "homepage": "https://github.com/isaluk/Bulls-and-Cows#readme",
+  "devDependencies": {
+    "serve": "^14.2.7",
+    "typescript": "~6.0.3"
+  }
+}
