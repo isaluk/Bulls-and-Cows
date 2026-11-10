@@ -5,7 +5,10 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch",
-    "start": "serve public"
+    "start": "serve public",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "repository": {
     "type": "git",
@@ -20,7 +23,13 @@
   },
   "homepage": "https://github.com/isaluk/Bulls-and-Cows#readme",
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.14.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.14.0",
+    "prettier": "^3.9.10",
     "serve": "^14.2.7",
-    "typescript": "~6.0.3"
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.72.2"
   }
 }
