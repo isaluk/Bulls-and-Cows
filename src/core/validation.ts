@@ -1,17 +1,28 @@
+import { createDigitValidator, normalizeDigit } from './digits.js';
 import type { Base } from './types.js';
 
+const hasUniqueChars = (chars: readonly string[]): boolean =>
+  new Set(chars.map(normalizeDigit)).size === chars.length;
+
 export const isValidGuess = (
-  _guess: string,
-  _length: number,
-  _base: Base,
+  guess: string,
+  length: number,
+  base: Base,
 ): boolean => {
-  throw new Error('Not implemented');
+  const isDigit = createDigitValidator(base);
+  const chars = guess.split('');
+
+  return (
+    chars.length === length && chars.every(isDigit) && hasUniqueChars(chars)
+  );
 };
 
 export const sanitizeGuess = (
-  _value: string,
-  _base: Base,
-  _maxLength: number,
+  value: string,
+  base: Base,
+  maxLength: number,
 ): string => {
-  throw new Error('Not implemented');
+  const isDigit = createDigitValidator(base);
+
+  return value.split('').filter(isDigit).slice(0, maxLength).join('');
 };
