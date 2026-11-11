@@ -11,6 +11,7 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:watch": "vitest",
+    "deploy": "npm test && npm run build && gh-pages -d public --nojekyll",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -36,6 +37,7 @@
     "@eslint/js": "^10.0.1",
     "eslint": "^10.14.0",
     "eslint-config-prettier": "^10.1.8",
+    "gh-pages": "^6.3.0",
     "globals": "^17.14.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
