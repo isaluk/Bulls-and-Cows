@@ -1,21 +1,24 @@
+import { MAX_LENGTH, MIN_LENGTH } from './constants.js';
 import type { Base, GameSettings } from './types.js';
 
-export const ALL_LENGTHS: number[] = [];
+const range = (from: number, to: number): number[] =>
+  Array.from({ length: to - from + 1 }, (_, i) => from + i);
 
-export const isLengthAvailable = (_length: number, _base: Base): boolean => {
-  throw new Error('Not implemented');
-};
+export const ALL_LENGTHS = range(MIN_LENGTH, MAX_LENGTH);
+
+export const isLengthAvailable = (length: number, base: Base): boolean =>
+  length <= base;
 
 export const changeBase = (
-  _settings: GameSettings,
-  _base: Base,
-): GameSettings => {
-  throw new Error('Not implemented');
-};
+  settings: GameSettings,
+  base: Base,
+): GameSettings => ({
+  base,
+  length: isLengthAvailable(settings.length, base) ? settings.length : base,
+});
 
 export const changeLength = (
-  _settings: GameSettings,
-  _length: number,
-): GameSettings => {
-  throw new Error('Not implemented');
-};
+  settings: GameSettings,
+  length: number,
+): GameSettings =>
+  isLengthAvailable(length, settings.base) ? { ...settings, length } : settings;
