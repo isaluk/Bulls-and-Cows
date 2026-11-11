@@ -1,21 +1,25 @@
 import type { GameRecord, GameSettings, GameState } from './types.js';
 
-export const getRecordsKey = (_settings: GameSettings): string => {
-  throw new Error('Not implemented');
-};
+export const getRecordsKey = ({ length, base }: GameSettings): string =>
+  `${length}-${base}`;
 
-export const compareRecords = (_a: GameRecord, _b: GameRecord): number => {
-  throw new Error('Not implemented');
-};
+export const compareRecords = (a: GameRecord, b: GameRecord): number =>
+  a.attempts - b.attempts || a.timeMs - b.timeMs;
 
 export const addRecord = (
-  _records: readonly GameRecord[],
-  _record: GameRecord,
-  _limit: number,
-): GameRecord[] => {
-  throw new Error('Not implemented');
-};
+  records: readonly GameRecord[],
+  record: GameRecord,
+  limit: number,
+): GameRecord[] => [...records, record].sort(compareRecords).slice(0, limit);
 
-export const createRecord = (_game: GameState): GameRecord => {
-  throw new Error('Not implemented');
+export const createRecord = (game: GameState): GameRecord => {
+  const finishedAt = game.finishedAt ?? game.startedAt;
+
+  return {
+    length: game.settings.length,
+    base: game.settings.base,
+    attempts: game.history.length,
+    timeMs: finishedAt - game.startedAt,
+    date: finishedAt,
+  };
 };
