@@ -1,7 +1,7 @@
 import type { GameState } from '../core/types.js';
 import { createElement } from './dom.js';
 import { formatTime, padZero } from './format.js';
-import { createMascot } from './images.js';
+import { createDecor, createMascot, type DecorName } from './images.js';
 import { createOutlinedText } from './outlined-text.js';
 import { createStat } from './stats-view.js';
 
@@ -9,6 +9,15 @@ export interface WinHandlers {
   readonly onPlayAgain: () => void;
   readonly onChangeSettings: () => void;
 }
+
+const DECOR: readonly DecorName[] = [
+  'pumpkin',
+  'cow-ghost',
+  'pumpkin',
+  'cow-ghost',
+  'pumpkin',
+  'pumpkin',
+];
 
 export interface WinView {
   readonly element: HTMLElement;
@@ -29,6 +38,7 @@ export const createWinView = (
   });
 
   const element = createElement('div', { className: 'overlay' }, [
+    ...DECOR.map(createDecor),
     createElement(
       'section',
       {

@@ -376,7 +376,8 @@ input {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mascot {
+  .mascot,
+  .decor {
     animation: none;
   }
 
@@ -707,6 +708,7 @@ input {
 }
 
 .win {
+  position: relative;
   justify-items: center;
   gap: 16px;
   width: min(620px, 100%);
@@ -765,6 +767,68 @@ input {
   gap: 16px;
 }
 
+.decor {
+  position: absolute;
+  width: 48px;
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 6px 10px rgb(10 8 18 / 60%));
+  animation: float 5s ease-in-out infinite;
+}
+
+.decor--1 {
+  top: 22%;
+  left: 16%;
+  width: 44px;
+  rotate: -12deg;
+  animation-duration: 4.5s;
+}
+
+.decor--2 {
+  top: 48%;
+  left: 9%;
+  width: 56px;
+  rotate: 8deg;
+  animation-duration: 5.5s;
+  animation-delay: -1s;
+}
+
+.decor--3 {
+  top: 76%;
+  left: 20%;
+  width: 40px;
+  rotate: 14deg;
+  animation-duration: 4s;
+  animation-delay: -2s;
+}
+
+.decor--4 {
+  top: 40%;
+  right: 10%;
+  width: 52px;
+  rotate: -8deg;
+  animation-duration: 6s;
+  animation-delay: -3s;
+}
+
+.decor--5 {
+  top: 18%;
+  right: 20%;
+  width: 36px;
+  rotate: 10deg;
+  animation-duration: 5s;
+  animation-delay: -1.5s;
+}
+
+.decor--6 {
+  top: 72%;
+  right: 15%;
+  width: 48px;
+  rotate: -14deg;
+  animation-duration: 4.8s;
+  animation-delay: -2.5s;
+}
+
 @media (min-width: 1025px) {
   .app {
     display: flex;
@@ -782,7 +846,15 @@ input {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 0;
     max-height: 100%;
+  }
+
+  .sidebar::after {
+    content: '';
+    order: 1;
+    flex: 0 100 80px;
+    min-height: 0;
   }
 
   .sidebar .tombstone {
@@ -790,8 +862,11 @@ input {
   }
 
   .sidebar .mascot {
+    position: relative;
+    order: 2;
     flex: 0 1 auto;
-    min-height: 0;
+    min-height: 120px;
+    margin-top: -64px;
     object-fit: contain;
   }
 
@@ -815,6 +890,22 @@ input {
     grid-template-columns: minmax(0, 420px) auto;
     justify-content: center;
     align-items: end;
+  }
+
+  .overlay .decor {
+    width: 40px;
+  }
+
+  .decor--1,
+  .decor--2,
+  .decor--3 {
+    left: 2%;
+  }
+
+  .decor--4,
+  .decor--5,
+  .decor--6 {
+    right: 2%;
   }
 }
 
@@ -917,5 +1008,22 @@ input {
     min-width: 56px;
     padding: 14px 14px 10px;
     font-size: 28px;
+  }
+
+  .decor--2,
+  .decor--3,
+  .decor--4,
+  .decor--6 {
+    display: none;
+  }
+
+  .decor--1 {
+    top: 48px;
+    left: 8%;
+  }
+
+  .decor--5 {
+    top: 64px;
+    right: 10%;
   }
 }
