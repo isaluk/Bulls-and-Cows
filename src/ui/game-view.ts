@@ -39,8 +39,8 @@ const createHistory = (history: readonly HistoryEntry[]): HTMLElement =>
   history.length > 0
     ? createElement(
         'ol',
-        { className: 'history' },
-        history.map(createHistoryItem),
+        { className: 'history', reversed: true },
+        history.map(createHistoryItem).toReversed(),
       )
     : createElement('p', {
         className: 'note',
