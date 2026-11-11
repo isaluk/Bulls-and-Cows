@@ -1,6 +1,9 @@
-import type { GameRecord } from '../core/types.js';
+import { BASE_OPTIONS } from '../core/constants.js';
+import { ALL_LENGTHS, isLengthAvailable } from '../core/settings.js';
+import type { Base, GameRecord, GameSettings } from '../core/types.js';
 
 const STORAGE_PREFIX = 'bulls-and-cows:records:';
+const SETTINGS_KEY = 'bulls-and-cows:settings';
 
 const isGameRecord = (value: unknown): value is GameRecord =>
   typeof value === 'object' &&
@@ -10,21 +13,55 @@ const isGameRecord = (value: unknown): value is GameRecord =>
   'timeMs' in value &&
   typeof value.timeMs === 'number';
 
-export const loadRecords = (key: string): GameRecord[] => {
-  try {
-    const raw = localStorage.getItem(STORAGE_PREFIX + key);
-    const parsed: unknown = raw ? JSON.parse(raw) : [];
+const isBase = (value: unknown): value is Base =>
+  BASE_OPTIONS.some((option) => option.value === value);
 
-    return Array.isArray(parsed) ? parsed.filter(isGameRecord) : [];
+const isGameSettings = (value: unknown): value is GameSettings =>
+  typeof value === 'object' &&
+  value !== null &&
+  'base' in value &&
+  isBase(value.base) &&
+  'length' in value &&
+  typeof value.length === 'number' &&
+  ALL_LENGTHS.includes(value.length) &&
+  isLengthAvailable(value.length, value.base);
+
+const readJson = (key: string): unknown => {
+  try {
+    const raw = localStorage.getItem(key);
+
+    return raw ? JSON.parse(raw) : null;
   } catch {
-    return [];
+    return null;
   }
 };
 
-export const saveRecords = (key: string, records: readonly GameRecord[]) => {
+const writeJson = (key: string, value: unknown) => {
   try {
-    localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(records));
+    localStorage.setItem(key, JSON.stringify(value));
   } catch {
     // Storage can be unavailable (private mode, quota). The game still works.
   }
+};
+
+export const loadRecords = (key: string): GameRecord[] => {
+  const parsed = readJson(STORAGE_PREFIX + key);
+
+  return Array.isArray(parsed) ? parsed.filter(isGameRecord) : [];
+};
+
+export const saveRecords = (key: string, records: readonly GameRecord[]) => {
+  writeJson(STORAGE_PREFIX + key, records);
+};
+
+export const loadSettings = (fallback: GameSettings): GameSettings => {
+  const parsed = readJson(SETTINGS_KEY);
+
+  return isGameSettings(parsed)
+    ? { length: parsed.length, base: parsed.base }
+    : fallback;
+};
+
+export const saveSettings = (settings: GameSettings) => {
+  writeJson(SETTINGS_KEY, settings);
 };

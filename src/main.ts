@@ -13,7 +13,12 @@ import { createLogo } from './ui/logo-view.js';
 import { createRecordsView } from './ui/records-view.js';
 import { createSettingsView } from './ui/settings-view.js';
 import { createStatsView } from './ui/stats-view.js';
-import { loadRecords, saveRecords } from './ui/storage.js';
+import {
+  loadRecords,
+  loadSettings,
+  saveRecords,
+  saveSettings,
+} from './ui/storage.js';
 import { createWinView } from './ui/win-view.js';
 
 interface AppState {
@@ -24,9 +29,10 @@ interface AppState {
 }
 
 const TICK_MS = 1000;
+const DEFAULT_SETTINGS: GameSettings = { length: 4, base: 10 };
 
 let appState: AppState = {
-  settings: { length: 4, base: 10 },
+  settings: loadSettings(DEFAULT_SETTINGS),
   game: null,
   message: '',
   rank: null,
@@ -38,6 +44,11 @@ document.body.append(root);
 
 const setState = (changes: Partial<AppState>) => {
   appState = { ...appState, ...changes };
+
+  if (changes.settings) {
+    saveSettings(changes.settings);
+  }
+
   render();
 };
 
