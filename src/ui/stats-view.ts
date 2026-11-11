@@ -23,7 +23,7 @@ export const createStatsView = (
   onNewGame: () => void,
 ): StatsView => {
   const timer = createElement('span', {
-    className: 'stat__value',
+    className: 'stat__value stat__value--timer',
     textContent: '00:00',
     role: 'timer',
   });
