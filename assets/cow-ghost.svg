@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+  <path d="M10.5 8.5C9 7 8.5 5 9 3C10.5 4.5 12 5.5 13 6.5Z" fill="#F3EBDD" stroke="#1A1420" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M21.5 8.5C23 7 23.5 5 23 3C21.5 4.5 20 5.5 19 6.5Z" fill="#F3EBDD" stroke="#1A1420" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M6 29V14C6 11.3478 7.05357 8.8043 8.92893 6.92893C10.8043 5.05357 13.3478 4 16 4C18.6522 4 21.1957 5.05357 23.0711 6.92893C24.9464 8.8043 26 11.3478 26 14V29L22.7 26L19.3 29L16 26L12.7 29L9.3 26L6 29Z" fill="#F3EBDD" stroke="#1A1420" stroke-width="2" stroke-linejoin="round"/>
+  <ellipse cx="21.5" cy="8.8" rx="2" ry="1.5" fill="#9A91B8"/>
+  <ellipse cx="9.4" cy="19.5" rx="2" ry="2.6" fill="#9A91B8"/>
+  <ellipse cx="22.3" cy="23" rx="2.2" ry="1.8" fill="#9A91B8"/>
+  <ellipse cx="12.6" cy="13" rx="1.5" ry="2" fill="#1A1420"/>
+  <ellipse cx="19.4" cy="13" rx="1.5" ry="2" fill="#1A1420"/>
+  <ellipse cx="16" cy="19.4" rx="4.6" ry="3" fill="#F4A6B8" stroke="#1A1420" stroke-width="1.5"/>
+  <ellipse cx="14.4" cy="19.4" rx="0.8" ry="1.1" fill="#1A1420"/>
+  <ellipse cx="17.6" cy="19.4" rx="0.8" ry="1.1" fill="#1A1420"/>
+</svg>
