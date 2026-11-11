@@ -8,7 +8,7 @@ export const createStat = (label, value) => createElement('div', { className: 's
 ]);
 export const createStatsView = (game, onNewGame) => {
     const timer = createElement('span', {
-        className: 'stat__value',
+        className: 'stat__value stat__value--timer',
         textContent: '00:00',
         role: 'timer',
     });
