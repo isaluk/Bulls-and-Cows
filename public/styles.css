@@ -283,6 +283,7 @@ input {
 .chip__input {
   position: absolute;
   inset: 0;
+  z-index: 1;
   margin: 0;
   opacity: 0;
   cursor: pointer;
@@ -300,6 +301,7 @@ input {
   border: var(--border);
   border-radius: var(--radius-m);
   box-shadow: var(--shadow-pop);
+  transition: transform 0.12s;
 }
 
 .chip__input:checked + .chip__face {
@@ -325,8 +327,10 @@ input {
   outline-offset: 3px;
 }
 
-.chip__input:not(:disabled):hover + .chip__face {
-  transform: translateY(-2px);
+@media (hover: hover) {
+  .chip__input:not(:disabled):hover + .chip__face {
+    transform: translateY(-2px);
+  }
 }
 
 .stats {
@@ -881,6 +885,20 @@ input {
   }
 }
 
+@media (max-width: 860px) {
+  .topbar {
+    justify-content: center;
+  }
+
+  .logo--compact {
+    justify-items: center;
+  }
+
+  .stats {
+    justify-content: center;
+  }
+}
+
 @media (max-width: 1024px) {
   .layout {
     grid-template-columns: minmax(0, 1fr);
@@ -964,10 +982,6 @@ input {
 
   .guess__input {
     padding-inline: 16px;
-  }
-
-  .stats .button {
-    flex: 1 0 100%;
   }
 
   .history__item {
