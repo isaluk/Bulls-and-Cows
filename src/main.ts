@@ -14,11 +14,13 @@ import { createRecordsView } from './ui/records-view.js';
 import { createSettingsView } from './ui/settings-view.js';
 import { createStatsView } from './ui/stats-view.js';
 import { loadRecords, saveRecords } from './ui/storage.js';
+import { createWinView } from './ui/win-view.js';
 
 interface AppState {
   readonly settings: GameSettings;
   readonly game: GameState | null;
   readonly message: string;
+  readonly rank: number | null;
 }
 
 const TICK_MS = 1000;
@@ -27,6 +29,7 @@ let appState: AppState = {
   settings: { length: 4, base: 10 },
   game: null,
   message: '',
+  rank: null,
 };
 let timerId: number | undefined;
 
@@ -53,13 +56,16 @@ const startTimer = (timer: HTMLElement, game: GameState) => {
   timerId = window.setInterval(update, TICK_MS);
 };
 
-const saveResult = (game: GameState) => {
+const saveResult = (game: GameState): number | null => {
   const key = getRecordsKey(game.settings);
+  const record = createRecord(game);
+  const records = addRecord(loadRecords(key), record, RECORDS_LIMIT);
 
-  saveRecords(
-    key,
-    addRecord(loadRecords(key), createRecord(game), RECORDS_LIMIT),
-  );
+  saveRecords(key, records);
+
+  const index = records.indexOf(record);
+
+  return index === -1 ? null : index + 1;
 };
 
 const getGuessError = (game: GameState, guess: string): string | null => {
@@ -91,24 +97,25 @@ const handleGuess = (guess: string) => {
   }
 
   const nextGame = applyGuess(game, guess, Date.now());
+  const rank = nextGame.status === 'won' ? saveResult(nextGame) : null;
 
-  if (nextGame.status === 'won') {
-    saveResult(nextGame);
-  }
-
-  setState({ game: nextGame, message: '' });
+  setState({ game: nextGame, message: '', rank });
 };
 
 const handleStart = () => {
   const { settings } = appState;
   const secret = generateSecret(settings.length, settings.base);
 
-  setState({ game: createGame(settings, secret, Date.now()), message: '' });
+  setState({
+    game: createGame(settings, secret, Date.now()),
+    message: '',
+    rank: null,
+  });
 };
 
 const handleNewGame = () => {
   stopTimer();
-  setState({ game: null, message: '' });
+  setState({ game: null, message: '', rank: null });
 };
 
 const focusCheckedRadio = (name: string) => {
@@ -146,23 +153,35 @@ const renderSettingsScreen = (settings: GameSettings) => {
   );
 };
 
-const renderGameScreen = (game: GameState, message: string) => {
+const renderGameScreen = (
+  game: GameState,
+  message: string,
+  rank: number | null,
+) => {
+  const isWon = game.status === 'won';
   const stats = createStatsView(game, handleNewGame);
   const gameView = createGameView(game, message, { onGuess: handleGuess });
+  const win = isWon
+    ? createWinView(game, rank, {
+        onPlayAgain: handleStart,
+        onChangeSettings: handleNewGame,
+      })
+    : null;
 
   root.className = 'app app--game';
   root.replaceChildren(
-    createElement('div', { className: 'topbar' }, [
+    createElement('div', { className: 'topbar', inert: isWon }, [
       createLogo(true),
       stats.element,
     ]),
-    createElement('main', { className: 'layout' }, [
+    createElement('main', { className: 'layout', inert: isWon }, [
       gameView.element,
       createSidebar(game.settings, 'hint'),
     ]),
+    ...(win ? [win.element] : []),
   );
 
-  if (game.status === 'playing') {
+  if (!isWon) {
     startTimer(stats.timer, game);
     gameView.input?.focus();
     return;
@@ -172,13 +191,14 @@ const renderGameScreen = (game: GameState, message: string) => {
   stats.timer.textContent = formatTime(
     (game.finishedAt ?? game.startedAt) - game.startedAt,
   );
+  win?.focusTarget.focus();
 };
 
 function render() {
-  const { settings, game, message } = appState;
+  const { settings, game, message, rank } = appState;
 
   if (game) {
-    renderGameScreen(game, message);
+    renderGameScreen(game, message, rank);
   } else {
     renderSettingsScreen(settings);
   }
